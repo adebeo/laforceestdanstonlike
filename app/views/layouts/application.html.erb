@@ -1,0 +1,35 @@
+<!doctype html>
+<html class="no-js" lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>#MA VOIX</title>
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+
+  </head>
+  <body>
+    <!-- Start Top Bar -->
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <ul class="menu">
+          <li class="menu-text"><img src="http://www.mavoix.info/wp-content/uploads/2015/11/mavoix.png" alt="Retour Accueil" width="450" height="103" style="max-width: 250px; max-height: 100px; width: 450px; height: 57.2222px;" data-no-retina="" class=" attachment-16" scale="0"></li>
+        </ul>
+      </div>
+
+      <div class="top-bar-right">
+        <ul class="menu">
+          <li><a href="http://www.mavoix.info/">Site officiel</a></li>
+          <li><a href="https://www.facebook.com/mavoixjuin2017/?fref=ts">Facebook</a></li>
+          <li><a href="https://twitter.com/mavoix2017">Twitter</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+        <%= yield %>
+    <!-- End Top Bar -->
+
+  </body>
+</html>

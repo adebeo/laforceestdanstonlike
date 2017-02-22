@@ -1,0 +1,33 @@
+<div class="callout large">
+  <div class="row column text-center">
+    <h1>Tagger le web pour mavoix</h1>
+    <p class="lead">Commenter et liker les commentaires de notre communauté</p>
+    <div href="#" data-open="sousmettreunlien" class="button large">Sousmettre un lien</div>
+    <div href="#" data-open="likerunlien" class="button large">Liker un lien</div>
+  </div>
+</div>
+
+<div id="sousmettreunlien" class="reveal" data-reveal>
+  <h2 id="modalTitle">Lien a soumettre</h2>
+  <p class="lead">Votre lien</p>
+  <p>Merci de le mettre après le tag</p>
+
+    <div class="field">
+      <input type="text" name="site[url]" id="site_url">
+    </div>
+    <div class="actions">
+      <div name="commit" class="button" data-disable-with="Create Site">nouveau site</div>
+    </div>
+
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div id="likerunlien" class="reveal" data-reveal>
+  <h2 id="modalTitle">Lien a soumettre</h2>
+  <a href="<%=@next_url%>" ><p class="lead"><%=@next_url%></p><a>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
