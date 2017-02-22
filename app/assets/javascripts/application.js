@@ -42,7 +42,7 @@ $(window).load(function() {
 				$(new_line).html(html);
 				$("#notice").fadeIn(1200).html("Créer avec succes");
 			} else {
-				$("#notice").fadeIn(1200).html("impossible de créer : verifier l'url");
+				$("#notice").fadeIn(1200).html("impossible de créer : verifier l'url ou que le lien n'existe pas");
 			}
 			plus_un_score();
 		});
