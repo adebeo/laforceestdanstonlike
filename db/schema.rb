@@ -10,13 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170221161938) do
+ActiveRecord::Schema.define(version: 20170222125405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "checkins", force: :cascade do |t|
+    t.string   "ip"
+    t.integer  "user_id"
+    t.integer  "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sites", force: :cascade do |t|
     t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

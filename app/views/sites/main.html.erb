@@ -1,33 +1,54 @@
+
 <div class="callout large">
   <div class="row column text-center">
     <h1>Tagger le web pour mavoix</h1>
     <p class="lead">Commenter et liker les commentaires de notre communauté</p>
-    <div href="#" data-open="sousmettreunlien" class="button large">Sousmettre un lien</div>
-    <div href="#" data-open="likerunlien" class="button large">Liker un lien</div>
   </div>
 </div>
 
-<div id="sousmettreunlien" class="reveal" data-reveal>
-  <h2 id="modalTitle">Lien a soumettre</h2>
-  <p class="lead">Votre lien</p>
-  <p>Merci de le mettre après le tag</p>
+<table>
+  <thead>
+    <tr>
+      <th>Url</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
 
-    <div class="field">
-      <input type="text" name="site[url]" id="site_url">
-    </div>
-    <div class="actions">
-      <div name="commit" class="button" data-disable-with="Create Site">nouveau site</div>
-    </div>
 
-  <button class="close-button" data-close aria-label="Close modal" type="button">
-    <span aria-hidden="true">&times;</span>
-  </button>
+
+  <p> vous êtes identifié avec votre ip afin d'eviter un system de login</p>
+  <div class="circlenumber">
+        vous avez liké
+        <h3 id="nb_like" ><%=@checked_site.length.to_s%></h3>
+  </div>
+  <p> vous êtes: -<%=@user.ip%>-</p>
+<div class="large-12 columns ">
+  <p id="notice" class= "alert-box round " style="display:none;"><%= notice %></p>
 </div>
 
-<div id="likerunlien" class="reveal" data-reveal>
-  <h2 id="modalTitle">Lien a soumettre</h2>
-  <a href="<%=@next_url%>" ><p class="lead"><%=@next_url%></p><a>
-  <button class="close-button" data-close aria-label="Close modal" type="button">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+  <tbody id="all_site">
+      <tr>
+        <td class="field">
+          <input type="text" name="site[url]" id="new_site_url">
+        </td>
+        <td class="actions">
+          <div id="new_site_url_button" class="button">Je l'ai commenté</div>
+        </td>
+      </tr>
+    <% @sites.each do |site| %>
+      <tr>
+        <% if site.users.include? @user %>
+          <td><%= site.url %></td>
+          <td></td>
+        <% else%>
+          <td><a target="_blank" href="<%= site.url %>"><%= site.url %></a></td>
+          <td>
+            <div type="new_checkin" class="button" url="<%=checkin_site_path({:id => site})%>">
+            "je vais le liké"
+            </div>
+        <%end%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

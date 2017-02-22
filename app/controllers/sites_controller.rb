@@ -1,17 +1,22 @@
 class SitesController < ApplicationController
   before_action :set_site, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_user, only: [:main, :create, :checkin_site]
 
   def main
+
     @site = Site.new
-    @sites = Site.all
-    randomsite = Site.order("RANDOM()").limit(1).first
-    if  @randomsite
-      @next_url = @randomsite.url
-    else
-      @next_url = "rien trouve"
-    end
+    @sites = get_none_checked_site
+
     #render :main , :layout => false 
+  end
+
+  def checkin_site
+    checkin = Checkin.new({:user_id=>@user.id,:site_id=>params[:id]})
+    if checkin.save
+      render json: {"status"=>"succes"}
+    else
+      render json: {"status"=>"fail"}
+    end
   end
 
   def get_next
@@ -23,7 +28,7 @@ class SitesController < ApplicationController
   # GET /sites
   # GET /sites.json
   def index
-    @sites = Site.all
+    @sites = get_none_checked_site
     respond_to do |format|
         format.html { render  :main }
         format.json { render  json: @sites.to_json }
@@ -47,8 +52,16 @@ class SitesController < ApplicationController
   # POST /sites
   # POST /sites.json
   def create
-    @site = Site.new(params[:url])
+
+    @site = Site.new({:url=>params[:url]})
     @site.save
+
+    checkin = Checkin.new({:site_id=>@site.id,:user_id=> @user.id})
+    if checkin.save
+      render json: {"message"=>"impossible de créer : verifier l'url","id"=>@site.id,"status"=>"ok"}
+    else
+      render json: {"message"=>"probleme lors de la creation","status"=>"fail"}
+    end
   end
 
   # PATCH/PUT /sites/1
@@ -77,6 +90,28 @@ class SitesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+
+    def get_none_checked_site
+      @checked_site = @user.sites.includes(:checkins)
+      @sites = Site.all
+      none_checked_site = @sites - @checked_site
+      return none_checked_site
+    end
+
+    def set_user
+      ip = request.remote_ip.to_s
+
+      if User.find_by_ip(ip)
+        puts "found"
+        @user = User.find_by_ip(ip)
+
+      else
+        puts "create"
+        @user = User.new({:ip=>ip})
+        @user.save
+      end
+    end
+
     def set_site
       @site = Site.find(params[:id])
     end
