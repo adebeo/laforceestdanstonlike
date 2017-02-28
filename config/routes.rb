@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :commentaires
   get "sites/checkin_site"=>  "sites#checkin_site" ,as: :checkin_site  
   get "sites/get_next_site"=>  "sites#get_next_site" ,as: :get_next_site  
   

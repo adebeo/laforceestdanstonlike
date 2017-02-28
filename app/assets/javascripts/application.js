@@ -46,6 +46,7 @@ $(window).load(function() {
 				$("#notice").fadeIn(1200).html("impossible de créer : verifier l'url ou que le lien n'existe pas");
 			}
 			plus_un_score();
+			$("#new_site_url").val('');
 		});
 
 	};
@@ -85,12 +86,21 @@ $(window).scroll(function() {
        	start +=step;
        	var stop = start+step;
        	var link = "sites/get_next_site?start="+start+"&stop="+stop;
-
 		$.get(
 		    link,
 		    {},
 		    function(data) {
-		    	console.log(data);
+		    	sites_to_be_added = JSON.parse(data.sites);
+		    	all_site = $("#all_sites")
+		    	if (sites_to_be_added != null){
+			    	for (var i = sites_to_be_added.length - 1; i >= 0; i--) {
+			    		var current_site = sites_to_be_added[i];
+						html = '<tr><td><a target="_blank" href="'+current_site.url+'">'+current_site.url+'</a></td><td>'+current_site.pseudo+'</td><td>';
+						html += '<div type="new_checkin" class="button" url="/sites/checkin_site?id='+current_site.id+'">';
+	            		html += '"je l\'ai liké"</div></td></tr>';
+	            		all_site.append(html);
+			    	}		    		
+	    		}
 		    }
 		)	
            //alert("bottom!");

@@ -6,7 +6,7 @@ class SitesController < ApplicationController
 
     @site = Site.new
     @sites = get_none_checked_site(0,10)
-
+    @commentaires = Commentaire.order("RANDOM()").limit(3)
     #render :main , :layout => false 
   end
 
@@ -100,7 +100,7 @@ class SitesController < ApplicationController
 
     def get_none_checked_site(start,stop)
       @checked_site = @user.sites.includes(:checkins)
-      @sites = Site.all
+      @sites = Site.all.order('checkins_count DESC')
       none_checked_site = @sites - @checked_site
       return none_checked_site[start..stop]
     end
