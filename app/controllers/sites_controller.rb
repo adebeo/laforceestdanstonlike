@@ -1,11 +1,11 @@
 class SitesController < ApplicationController
   before_action :set_site, only: [:show, :edit, :update, :destroy]
-  before_action :set_user, only: [:main, :create, :checkin_site]
+  before_action :set_user, only: [:main, :create, :checkin_site,:get_next_site]
 
   def main
 
     @site = Site.new
-    @sites = get_none_checked_site
+    @sites = get_none_checked_site(0,10)
 
     #render :main , :layout => false 
   end
@@ -53,7 +53,7 @@ class SitesController < ApplicationController
   # POST /sites.json
   def create
 
-    @site = Site.new({:url=>params[:url]})
+    @site = Site.new({:url=>params[:url],:pseudo=>params[:pseudo]})
     @site.save
 
     checkin = Checkin.new({:site_id=>@site.id,:user_id=> @user.id})
@@ -88,25 +88,31 @@ class SitesController < ApplicationController
     end
   end
 
+  def get_next_site
+     start = params[:start].to_i
+     stop = params[:stop].to_i
+     next_site = get_none_checked_site(start,stop)
+     render json: {"sites":next_site.to_json}
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
 
-    def get_none_checked_site
+    def get_none_checked_site(start,stop)
       @checked_site = @user.sites.includes(:checkins)
       @sites = Site.all
       none_checked_site = @sites - @checked_site
-      return none_checked_site
+      return none_checked_site[start..stop]
     end
 
     def set_user
       ip = request.remote_ip.to_s
 
       if User.find_by_ip(ip)
-        puts "found"
+
         @user = User.find_by_ip(ip)
 
       else
-        puts "create"
         @user = User.new({:ip=>ip})
         @user.save
       end
@@ -118,6 +124,6 @@ class SitesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def site_params
-      params.require(:site).permit(:url)
+      params.require(:site).permit(:url,:pseudo)
     end
 end

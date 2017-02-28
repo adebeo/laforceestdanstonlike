@@ -8,20 +8,24 @@
 
 <table>
   <thead>
+    <tr><th colspan=3 ><h2>JE CREE UN COMMENTAIRE</h2></th></tr>
+  </thead>
     <tr>
-      <th>Url</th>
+      <th>Adresse de la video: http...</th>
+      <th>Pseudo</th>
       <th colspan="3"></th>
     </tr>
-  </thead>
 
 
 
-  <p> vous êtes identifié avec votre ip afin d'eviter un system de login</p>
+  <div class="text-center">
+  <p > vous êtes identifié avec votre ip afin d'eviter un system de login</p>
   <div class="circlenumber">
         vous avez liké
         <h3 id="nb_like" ><%=@checked_site.length.to_s%></h3>
   </div>
   <p> vous êtes: -<%=@user.ip%>-</p>
+  </div>
 <div class="large-12 columns ">
   <p id="notice" class= "alert-box round " style="display:none;"><%= notice %></p>
 </div>
@@ -31,10 +35,19 @@
         <td class="field">
           <input type="text" name="site[url]" id="new_site_url">
         </td>
+        <td class="field">
+          <input type="text" name="site[pseudo]" id="new_site_pseudo">
+        </td>
         <td class="actions">
           <div id="new_site_url_button" class="button">Je l'ai commenté</div>
         </td>
       </tr>
+      <thead>
+      <tr><th colspan=3 ><h2>JE LIKE UN COMMENTAIRE EXISTANT</h2></th></tr>
+      </thead>
+  </tbody>
+
+  <tbody>  
     <% @sites.each do |site| %>
       <tr>
         <% if site.users.include? @user %>
@@ -42,13 +55,23 @@
           <td></td>
         <% else%>
           <td><a target="_blank" href="<%= site.url %>"><%= site.url %></a></td>
+          <td><%= site.pseudo %></td>
           <td>
             <div type="new_checkin" class="button" url="<%=checkin_site_path({:id => site})%>">
-            "je vais le liké"
+            "je l'ai liké"
             </div>
         <%end%>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<script>
+  var start= 0; 
+</script>
+<%#
+  classement par popularité puis la harzard puis par 
+  commentaire: proposer des commentaires
+  netooyer http
+%>
 

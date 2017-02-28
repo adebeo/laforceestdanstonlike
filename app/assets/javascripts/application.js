@@ -24,8 +24,9 @@ $(window).load(function() {
 	var new_site_button = document.getElementById("new_site_url_button");
 	new_site_button.onclick = function(){
 		var new_url = document.getElementById("new_site_url").value;
+		var new_pseudo = document.getElementById("new_site_pseudo").value; 
 	 	var link = "/sites.json";
-	 	var new_url_info = {"url":new_url};
+	 	var new_url_info = {"url":new_url,"pseudo":new_pseudo};
 		$.post(
 		    link,
 		    new_url_info,
@@ -35,7 +36,7 @@ $(window).load(function() {
 			console.log(callback);
 			if (callback.status == "ok"){
 				var html ="";
-				html += "<td>"+new_url+"</td>";
+				html += "<td>"+new_url+" | pseudo :"+new_pseudo +"</td>"; 
 	    		html += "<td></td>";
 				var table = document.getElementById("all_site");
 				var new_line = table.insertRow(1);
@@ -77,5 +78,34 @@ $(window).load(function() {
 		$(score_string).html(score);
 	}
 	
+// load newt data at the end
+$(window).scroll(function() {
+       if($(window).scrollTop() + $(window).height() == getDocHeight()) {
+       	var step = 10;
+       	start +=step;
+       	var stop = start+step;
+       	var link = "sites/get_next_site?start="+start+"&stop="+stop;
+
+		$.get(
+		    link,
+		    {},
+		    function(data) {
+		    	console.log(data);
+		    }
+		)	
+           //alert("bottom!");
+       }
+   });
+
 
 });
+
+function getDocHeight() {
+    var D = document;
+    return Math.max(
+        D.body.scrollHeight, D.documentElement.scrollHeight,
+        D.body.offsetHeight, D.documentElement.offsetHeight,
+        D.body.clientHeight, D.documentElement.clientHeight
+    );
+}
+
