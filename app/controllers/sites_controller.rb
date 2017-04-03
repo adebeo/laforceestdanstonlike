@@ -3,7 +3,6 @@ class SitesController < ApplicationController
   before_action :set_user, only: [:main, :create, :checkin_site,:get_next_site]
 
   def main
-
     @site = Site.new
     @sites = get_none_checked_site(0,10)
     @commentaires = Commentaire.order("RANDOM()").limit(3)
@@ -28,9 +27,10 @@ class SitesController < ApplicationController
   # GET /sites
   # GET /sites.json
   def index
-    @sites = get_none_checked_site
+    set_user
+    @sites = Site.all
     respond_to do |format|
-        format.html { render  :main }
+        format.html { render  :index }
         format.json { render  json: @sites.to_json }
     end
   end
